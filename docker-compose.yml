@@ -1,0 +1,95 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: kerjapro-postgres
+    environment:
+      POSTGRES_DB: kerjapro
+      POSTGRES_USER: kerjapro
+      POSTGRES_PASSWORD: kerjapro_pass
+    ports:
+      - "5433:5432"
+    volumes:
+      - kerjapro_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kerjapro"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: kerjapro-redis
+    command: redis-server --requirepass kerjapro_redis_pass
+    ports:
+      - "6380:6379"
+
+  kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: kerjapro-kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9093,CONTROLLER://0.0.0.0:9094
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9093
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9094
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      CLUSTER_ID: kerjapro-kafka-cluster
+    ports:
+      - "9093:9093"
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kerjapro-kafka-ui
+    depends_on:
+      - kafka
+    ports:
+      - "8091:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: kerjapro
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9093
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.3
+    container_name: kerjapro-keycloak
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin_pass
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/kerjapro
+      KC_DB_USERNAME: kerjapro
+      KC_DB_PASSWORD: kerjapro_pass
+      KC_HTTP_PORT: 8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  minio:
+    image: minio/minio:latest
+    container_name: kerjapro-minio
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: kerjapro_minio
+      MINIO_ROOT_PASSWORD: kerjapro_minio_pass
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - kerjapro_miniodata:/data
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: kerjapro-mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+volumes:
+  kerjapro_pgdata:
+  kerjapro_miniodata:
