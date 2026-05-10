@@ -2,7 +2,9 @@ package com.kerjapro.contractor.entity;
 
 import com.kerjapro.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -11,12 +13,10 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class SubcontractorProfile extends BaseEntity {
 
     @Column(name = "user_id", nullable = false, unique = true)
-    private String userId; // Keycloak user ID
+    private String userId;
 
     @Column(name = "business_name", nullable = false)
     private String businessName;
@@ -43,7 +43,7 @@ public class SubcontractorProfile extends BaseEntity {
     private String profilePhotoUrl;
 
     @Column(name = "cidb_grade")
-    private String cidbGrade; // Malaysia CIDB registration grade
+    private String cidbGrade;
 
     @Column(name = "cidb_registration_no")
     private String cidbRegistrationNo;

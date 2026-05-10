@@ -2,7 +2,9 @@ package com.kerjapro.contractor.entity;
 
 import com.kerjapro.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,8 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class PortfolioItem extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)

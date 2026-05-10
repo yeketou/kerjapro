@@ -1,15 +1,15 @@
 package com.kerjapro.common.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "tenants", schema = "public")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class Tenant extends BaseEntity {
 
     @Column(name = "slug", nullable = false, unique = true)
@@ -35,15 +35,9 @@ public class Tenant extends BaseEntity {
     @Column(name = "status", nullable = false)
     private Status status = Status.ACTIVE;
 
-    // Generated column — read only
     @Column(name = "schema_name", insertable = false, updatable = false)
     private String schemaName;
 
-    public enum Plan {
-        STARTER, PROFESSIONAL, ENTERPRISE
-    }
-
-    public enum Status {
-        ACTIVE, SUSPENDED, CANCELLED
-    }
+    public enum Plan     { STARTER, PROFESSIONAL, ENTERPRISE }
+    public enum Status   { ACTIVE, SUSPENDED, CANCELLED }
 }

@@ -2,15 +2,15 @@ package com.kerjapro.contractor.entity;
 
 import com.kerjapro.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "trade_specializations")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class TradeSpecialization extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,22 +28,10 @@ public class TradeSpecialization extends BaseEntity {
     private String description;
 
     public enum TradeCategory {
-        PLUMBING,
-        ELECTRICAL,
-        TILING,
-        CARPENTRY,
-        PAINTING,
-        ROOFING,
-        HVAC,
-        LANDSCAPING,
-        FLOORING,
-        WATERPROOFING,
-        ALUMINUM_WORKS,
-        GLASS_WORKS,
-        RENOVATION,
-        BATHROOM,
-        KITCHEN,
-        CIVIL_WORKS,
-        OTHER
+        PLUMBING, ELECTRICAL, TILING, CARPENTRY,
+        PAINTING, ROOFING, HVAC, LANDSCAPING,
+        FLOORING, WATERPROOFING, ALUMINUM_WORKS,
+        GLASS_WORKS, RENOVATION, BATHROOM, KITCHEN,
+        CIVIL_WORKS, OTHER
     }
 }

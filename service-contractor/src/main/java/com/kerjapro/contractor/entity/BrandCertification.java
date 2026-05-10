@@ -2,7 +2,9 @@ package com.kerjapro.contractor.entity;
 
 import com.kerjapro.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
@@ -11,8 +13,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
 public class BrandCertification extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -20,10 +20,10 @@ public class BrandCertification extends BaseEntity {
     private SubcontractorProfile profile;
 
     @Column(name = "brand_name", nullable = false)
-    private String brandName; // e.g. "Grohe", "American Standard", "Panasonic"
+    private String brandName;
 
     @Column(name = "certification_name", nullable = false)
-    private String certificationName; // e.g. "Certified Grohe Installer"
+    private String certificationName;
 
     @Column(name = "certification_no")
     private String certificationNo;
@@ -38,5 +38,5 @@ public class BrandCertification extends BaseEntity {
     private String certificateUrl;
 
     @Column(name = "is_verified", nullable = false)
-    private boolean verified = false; // verified by brand/platform
+    private boolean verified = false;
 }
