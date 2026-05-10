@@ -10,7 +10,7 @@ spring:
       maximum-pool-size: 10
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none   # Flyway manages schema — Hibernate must not touch it
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

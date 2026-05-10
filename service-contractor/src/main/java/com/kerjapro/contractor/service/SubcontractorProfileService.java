@@ -10,6 +10,8 @@ import com.kerjapro.contractor.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.*;
+
+import java.math.BigDecimal;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -207,7 +209,7 @@ public class SubcontractorProfileService {
         return (r, q, cb) -> cb.equal(cb.lower(r.get("state")), state.toLowerCase());
     }
 
-    private Specification<SubcontractorProfile> minRating(Double min) {
+    private Specification<SubcontractorProfile> minRating(BigDecimal min) {
         if (min == null) return null;
         return (r, q, cb) -> cb.greaterThanOrEqualTo(r.get("averageRating"), min);
     }

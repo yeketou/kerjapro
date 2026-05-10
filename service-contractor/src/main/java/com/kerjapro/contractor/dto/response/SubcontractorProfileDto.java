@@ -3,6 +3,7 @@ package com.kerjapro.contractor.dto.response;
 import com.kerjapro.contractor.entity.SubcontractorProfile.SubscriptionTier;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class SubcontractorProfileDto {
     private SubscriptionTier subscriptionTier;
     private boolean verified;
     private boolean available;
-    private Double averageRating;
+    private BigDecimal averageRating;
     private Integer totalReviews;
     private Integer totalCompletedJobs;
     private List<TradeSpecializationDto> tradeSpecializations;

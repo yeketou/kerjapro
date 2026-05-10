@@ -29,7 +29,7 @@ export interface SubcontractorProfile {
   subscriptionTier: SubscriptionTier;
   verified: boolean;
   available: boolean;
-  averageRating?: number;
+  averageRating?: string; // NUMERIC(3,2) from backend — use parseFloat() when displaying
   totalReviews: number;
   totalCompletedJobs: number;
   tradeSpecializations: TradeSpecialization[];

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -58,8 +59,8 @@ public class SubcontractorProfile extends BaseEntity {
     @Column(name = "is_available", nullable = false)
     private boolean available = true;
 
-    @Column(name = "average_rating")
-    private Double averageRating;
+    @Column(name = "average_rating", precision = 3, scale = 2)
+    private BigDecimal averageRating;
 
     @Column(name = "total_reviews")
     private Integer totalReviews = 0;

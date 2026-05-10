@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,7 +44,7 @@ public interface SubcontractorProfileRepository
 
     @Modifying
     @Query("UPDATE SubcontractorProfile p SET p.averageRating = :rating, p.totalReviews = :count WHERE p.id = :id")
-    void updateRating(@Param("id") UUID id, @Param("rating") Double rating, @Param("count") int count);
+    void updateRating(@Param("id") UUID id, @Param("rating") BigDecimal rating, @Param("count") int count);
 
     @Modifying
     @Query("UPDATE SubcontractorProfile p SET p.totalCompletedJobs = p.totalCompletedJobs + 1 WHERE p.id = :id")

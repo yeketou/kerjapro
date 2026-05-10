@@ -2,7 +2,8 @@ package com.kerjapro.contractor.dto.request;
 
 import com.kerjapro.contractor.entity.TradeSpecialization.TradeCategory;
 import lombok.Data;
-import org.springframework.data.domain.Sort;
+
+import java.math.BigDecimal;
 
 @Data
 public class SearchRequest {
@@ -11,7 +12,7 @@ public class SearchRequest {
     private String brandName;
     private String city;
     private String state;
-    private Double minRating;
+    private BigDecimal minRating;
     private Boolean verified;
     private Boolean available = true;
 
