@@ -10,9 +10,12 @@ interface AuthState {
   userId: string | null;
   role: Role;
   fullName: string | null;
+  // Tenant context — set for MAIN_CONTRACTOR, null for SUBCONTRACTOR
+  tenantSlug: string | null;
+  tenantName: string | null;
 
   setTokens: (access: string, refresh: string) => void;
-  setUser: (userId: string, role: Role, fullName: string) => void;
+  setUser: (userId: string, role: Role, fullName: string, tenantSlug?: string, tenantName?: string) => void;
   logout: () => Promise<void>;
   loadFromStorage: () => Promise<void>;
 }
@@ -27,6 +30,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   userId: null,
   role: null,
   fullName: null,
+  tenantSlug: null,
+  tenantName: null,
 
   setTokens: async (access, refresh) => {
     await SecureStore.setItemAsync(TOKEN_KEY, access);
@@ -34,8 +39,8 @@ export const useAuthStore = create<AuthState>((set) => ({
     set({ accessToken: access, refreshToken: refresh, isAuthenticated: true });
   },
 
-  setUser: (userId, role, fullName) => {
-    set({ userId, role, fullName });
+  setUser: (userId, role, fullName, tenantSlug, tenantName) => {
+    set({ userId, role, fullName, tenantSlug: tenantSlug ?? null, tenantName: tenantName ?? null });
   },
 
   logout: async () => {
@@ -48,6 +53,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       userId: null,
       role: null,
       fullName: null,
+      tenantSlug: null,
+      tenantName: null,
     });
   },
 
