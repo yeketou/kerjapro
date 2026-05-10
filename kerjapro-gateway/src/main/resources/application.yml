@@ -1,0 +1,72 @@
+spring:
+  application:
+    name: kerjapro-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: service-contractor
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/contractors/**,/api/profiles/**,/api/brands/**
+          filters:
+            - TenantHeaderFilter
+
+        - id: service-project
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/projects/**,/api/packages/**
+          filters:
+            - TenantHeaderFilter
+
+        - id: service-booking
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/bookings/**
+          filters:
+            - TenantHeaderFilter
+
+        - id: service-review
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/reviews/**
+          filters:
+            - TenantHeaderFilter
+
+        - id: service-notification
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/notifications/**
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/kerjapro
+          jwk-set-uri: http://localhost:8080/realms/kerjapro/protocol/openid-connect/certs
+
+  data:
+    redis:
+      host: localhost
+      port: 6380
+      password: kerjapro_redis_pass
+
+server:
+  port: 8079
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Local: accept any token (no real Keycloak validation)
+          issuer-uri: http://localhost:8080/realms/kerjapro
