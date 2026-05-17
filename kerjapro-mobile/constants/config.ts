@@ -32,7 +32,7 @@ export const KEYCLOAK = {
   revocationEndpoint: `${CONFIG.KEYCLOAK_URL}/realms/${CONFIG.KEYCLOAK_REALM}/protocol/openid-connect/logout`,
   clientId:           CONFIG.KEYCLOAK_CLIENT_ID,
   redirectUri:        'kerjapro://auth/callback',
-  scopes:             ['openid', 'profile', 'email'],
+  scopes:             ['openid'],
 };
 
 export const SERVICES = {
