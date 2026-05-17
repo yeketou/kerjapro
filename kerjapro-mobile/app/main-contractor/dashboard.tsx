@@ -6,6 +6,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { projectService } from '../../services/projectService';
 import { bookingService } from '../../services/bookingService';
 import { StatusBadge } from '../../components/common/StatusBadge';
+import { KerjaProLogo } from '../../components/common/KerjaProLogo';
 
 export default function MCDashboard() {
   const { fullName, logout } = useAuth();
@@ -28,13 +29,14 @@ export default function MCDashboard() {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <View>
-            <Text style={styles.greeting}>Good day,</Text>
-            <Text style={styles.name}>{fullName ?? 'Contractor'} 👋</Text>
-          </View>
+          <KerjaProLogo size={36} variant="full" theme="light" />
           <TouchableOpacity onPress={logout} style={styles.logoutBtn}>
             <Text style={styles.logoutText}>Logout</Text>
           </TouchableOpacity>
+        </View>
+        <View style={styles.greetingBox}>
+          <Text style={styles.greeting}>Good day,</Text>
+          <Text style={styles.name}>{fullName ?? 'Contractor'} 👋</Text>
         </View>
 
         {/* Stats */}
@@ -126,9 +128,10 @@ function ActionCard({ icon, label, onPress }: any) {
 
 const styles = StyleSheet.create({
   container:      { flex: 1, backgroundColor: '#F9FAFB' },
-  header:         { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingBottom: 8 },
-  greeting:       { fontSize: 14, color: '#9CA3AF' },
-  name:           { fontSize: 22, fontWeight: '800', color: '#1C1C1E' },
+  header:         { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 16, paddingBottom: 4 },
+  greetingBox:    { paddingHorizontal: 20, paddingBottom: 8 },
+  greeting:       { fontSize: 13, color: '#9CA3AF' },
+  name:           { fontSize: 20, fontWeight: '800', color: '#1C1C1E' },
   logoutBtn:      { padding: 8 },
   logoutText:     { fontSize: 13, color: '#9CA3AF' },
   stats:          { flexDirection: 'row', gap: 12, padding: 20, paddingTop: 12 },

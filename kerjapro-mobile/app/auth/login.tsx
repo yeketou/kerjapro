@@ -1,32 +1,30 @@
 import {
-  View, Text, TouchableOpacity, Image,
+  View, Text, TouchableOpacity,
   StyleSheet, ActivityIndicator, Alert,
 } from 'react-native';
 import { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
 import { useAuth } from '../../hooks/useAuth';
+import { KerjaProLogo } from '../../components/common/KerjaProLogo';
 
 export default function LoginScreen() {
-  const { login, restoreSession, isAuthenticated } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { login, restoreSession } = useAuth();
+  const [loading,   setLoading]   = useState(false);
   const [restoring, setRestoring] = useState(true);
 
-  // Attempt to restore existing session on mount
   useEffect(() => {
     (async () => {
-      try {
-        await restoreSession();
-      } finally {
-        setRestoring(false);
-      }
+      try { await restoreSession(); }
+      finally { setRestoring(false); }
     })();
   }, []);
 
   if (restoring) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#F97316" />
+      <View style={styles.splash}>
+        <KerjaProLogo size={72} variant="icon" theme="dark" />
+        <ActivityIndicator color="#F97316" style={{ marginTop: 24 }} />
       </View>
     );
   }
@@ -34,11 +32,9 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const success = await login();
-      if (!success) {
-        Alert.alert('Login Failed', 'Please try again.');
-      }
-    } catch (e) {
+      const ok = await login();
+      if (!ok) Alert.alert('Login Failed', 'Please try again.');
+    } catch {
       Alert.alert('Error', 'Something went wrong. Please try again.');
     } finally {
       setLoading(false);
@@ -49,49 +45,50 @@ export default function LoginScreen() {
     <SafeAreaView style={styles.container}>
       <StatusBar style="dark" />
 
-      {/* Logo & Tagline */}
+      {/* Hero */}
       <View style={styles.hero}>
-        <View style={styles.logoBox}>
-          <Text style={styles.logoText}>KP</Text>
+        <KerjaProLogo size={96} variant="icon" theme="dark" />
+        <View style={styles.wordmarkRow}>
+          <Text style={styles.wordKerja}>Kerja</Text>
+          <Text style={styles.wordPro}>Pro</Text>
         </View>
-        <Text style={styles.appName}>KerjaPro</Text>
         <Text style={styles.tagline}>
           Malaysia's Construction{'\n'}Subcontractor Marketplace
         </Text>
       </View>
 
-      {/* Features */}
+      {/* Feature cards */}
       <View style={styles.features}>
         {[
-          { icon: '🔍', text: 'Find verified subcontractors by trade & brand' },
-          { icon: '🏆', text: 'Trusted ratings from real projects' },
-          { icon: '📅', text: 'Book site appointments instantly' },
-        ].map((item, i) => (
-          <View key={i} style={styles.featureRow}>
-            <Text style={styles.featureIcon}>{item.icon}</Text>
-            <Text style={styles.featureText}>{item.text}</Text>
+          { icon: '🔍', title: 'Find by Trade & Brand',    body: 'Search certified subs by specialisation and brand expertise' },
+          { icon: '⭐', title: 'Verified Ratings',          body: 'Trusted reviews from real completed projects' },
+          { icon: '📅', title: 'Book Appointments',         body: 'Schedule site visits and meetings in seconds' },
+        ].map((f, i) => (
+          <View key={i} style={styles.featureCard}>
+            <Text style={styles.featureIcon}>{f.icon}</Text>
+            <View style={styles.featureText}>
+              <Text style={styles.featureTitle}>{f.title}</Text>
+              <Text style={styles.featureBody}>{f.body}</Text>
+            </View>
           </View>
         ))}
       </View>
 
       {/* CTA */}
-      <View style={styles.actions}>
+      <View style={styles.cta}>
         <TouchableOpacity
-          style={[styles.loginButton, loading && styles.loginButtonDisabled]}
+          style={[styles.loginBtn, loading && styles.loginBtnDisabled]}
           onPress={handleLogin}
           disabled={loading}
           activeOpacity={0.85}
         >
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.loginButtonText}>Sign In / Register</Text>
-          )}
+          {loading
+            ? <ActivityIndicator color="#fff" />
+            : <Text style={styles.loginBtnText}>Get Started</Text>
+          }
         </TouchableOpacity>
-
         <Text style={styles.disclaimer}>
-          By continuing, you agree to KerjaPro's{'\n'}
-          Terms of Service and Privacy Policy
+          By continuing you agree to KerjaPro's Terms & Privacy Policy
         </Text>
       </View>
     </SafeAreaView>
@@ -99,56 +96,54 @@ export default function LoginScreen() {
 }
 
 const styles = StyleSheet.create({
-  loadingContainer: {
+  splash: {
     flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff',
   },
   container: {
-    flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 28,
+    flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 24,
   },
   hero: {
-    flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 40,
+    flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 20,
   },
-  logoBox: {
-    width: 80, height: 80, borderRadius: 20,
-    backgroundColor: '#F97316',
-    justifyContent: 'center', alignItems: 'center',
-    marginBottom: 16,
-    shadowColor: '#F97316', shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.3, shadowRadius: 16, elevation: 8,
+  wordmarkRow: {
+    flexDirection: 'row', alignItems: 'baseline', marginTop: 16,
   },
-  logoText: {
-    fontSize: 32, fontWeight: '800', color: '#fff',
+  wordKerja: {
+    fontSize: 34, fontWeight: '800', color: '#1C1C1E', letterSpacing: -1,
   },
-  appName: {
-    fontSize: 32, fontWeight: '800', color: '#1C1C1E', letterSpacing: -0.5,
+  wordPro: {
+    fontSize: 34, fontWeight: '900', color: '#F97316', letterSpacing: -1,
   },
   tagline: {
-    fontSize: 16, color: '#6B7280', textAlign: 'center',
+    fontSize: 15, color: '#9CA3AF', textAlign: 'center',
     marginTop: 8, lineHeight: 24,
   },
   features: {
-    paddingVertical: 32, gap: 16,
+    gap: 10, paddingBottom: 24,
   },
-  featureRow: {
-    flexDirection: 'row', alignItems: 'center', gap: 12,
-    backgroundColor: '#FFF7ED', borderRadius: 12, padding: 14,
+  featureCard: {
+    flexDirection: 'row', alignItems: 'center', gap: 14,
+    backgroundColor: '#F9FAFB', borderRadius: 14, padding: 14,
+    borderWidth: 1, borderColor: '#F3F4F6',
   },
-  featureIcon: { fontSize: 20 },
-  featureText: { fontSize: 14, color: '#374151', flex: 1, fontWeight: '500' },
-  actions: {
-    paddingBottom: 20, gap: 16,
+  featureIcon:  { fontSize: 24 },
+  featureText:  { flex: 1 },
+  featureTitle: { fontSize: 14, fontWeight: '700', color: '#1C1C1E' },
+  featureBody:  { fontSize: 12, color: '#9CA3AF', marginTop: 2, lineHeight: 18 },
+  cta: {
+    paddingBottom: 24, gap: 12,
   },
-  loginButton: {
+  loginBtn: {
     backgroundColor: '#F97316', borderRadius: 14,
     paddingVertical: 16, alignItems: 'center',
     shadowColor: '#F97316', shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25, shadowRadius: 8, elevation: 4,
+    shadowOpacity: 0.3, shadowRadius: 8, elevation: 5,
   },
-  loginButtonDisabled: { opacity: 0.7 },
-  loginButtonText: {
-    color: '#fff', fontSize: 17, fontWeight: '700', letterSpacing: 0.2,
+  loginBtnDisabled: { opacity: 0.7 },
+  loginBtnText: {
+    color: '#fff', fontSize: 17, fontWeight: '800', letterSpacing: 0.2,
   },
   disclaimer: {
-    fontSize: 12, color: '#9CA3AF', textAlign: 'center', lineHeight: 18,
+    fontSize: 11, color: '#D1D5DB', textAlign: 'center', lineHeight: 17,
   },
 });

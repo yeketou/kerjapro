@@ -7,6 +7,7 @@ import { contractorService } from '../../services/contractorService';
 import { bookingService } from '../../services/bookingService';
 import { RatingStars } from '../../components/common/RatingStars';
 import { StatusBadge } from '../../components/common/StatusBadge';
+import { KerjaProLogo } from '../../components/common/KerjaProLogo';
 
 export default function SubDashboard() {
   const { fullName, logout } = useAuth();
@@ -31,13 +32,14 @@ export default function SubDashboard() {
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
-          <View>
-            <Text style={styles.greeting}>Welcome back,</Text>
-            <Text style={styles.name}>{fullName ?? 'Subcontractor'} 🔧</Text>
-          </View>
+          <KerjaProLogo size={36} variant="full" theme="light" />
           <TouchableOpacity onPress={logout} style={styles.logoutBtn}>
             <Text style={styles.logoutText}>Logout</Text>
           </TouchableOpacity>
+        </View>
+        <View style={styles.greetingBox}>
+          <Text style={styles.greeting}>Welcome back,</Text>
+          <Text style={styles.name}>{fullName ?? 'Subcontractor'} 🔧</Text>
         </View>
 
         {/* Profile card */}
@@ -136,9 +138,10 @@ function MiniStat({ label, value }: any) {
 
 const styles = StyleSheet.create({
   container:      { flex: 1, backgroundColor: '#F9FAFB' },
-  header:         { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 20, paddingBottom: 8 },
-  greeting:       { fontSize: 14, color: '#9CA3AF' },
-  name:           { fontSize: 22, fontWeight: '800', color: '#1C1C1E' },
+  header:         { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 16, paddingBottom: 4 },
+  greetingBox:    { paddingHorizontal: 20, paddingBottom: 8 },
+  greeting:       { fontSize: 13, color: '#9CA3AF' },
+  name:           { fontSize: 20, fontWeight: '800', color: '#1C1C1E' },
   logoutBtn:      { padding: 8 },
   logoutText:     { fontSize: 13, color: '#9CA3AF' },
   profileCard:    { backgroundColor: '#fff', marginHorizontal: 16, borderRadius: 16, padding: 16, shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.06, shadowRadius: 8, elevation: 2 },

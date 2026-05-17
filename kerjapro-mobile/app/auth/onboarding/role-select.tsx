@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import apiClient from '../../../services/apiClient';
 import { useAuth } from '../../../hooks/useAuth';
+import { KerjaProLogo } from '../../../components/common/KerjaProLogo';
 
 const ROLES = [
   {
@@ -44,6 +45,7 @@ export default function RoleSelectScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
+        <KerjaProLogo size={52} variant="icon" theme="dark" />
         <Text style={styles.title}>Welcome to KerjaPro</Text>
         <Text style={styles.subtitle}>How will you be using KerjaPro?</Text>
       </View>
@@ -81,7 +83,7 @@ export default function RoleSelectScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F9FAFB', paddingHorizontal: 20 },
-  header: { paddingTop: 32, paddingBottom: 24, alignItems: 'center' },
+  header: { paddingTop: 32, paddingBottom: 24, alignItems: 'center', gap: 10 },
   title: { fontSize: 26, fontWeight: '800', color: '#1C1C1E' },
   subtitle: { fontSize: 15, color: '#6B7280', marginTop: 6 },
   cards: { gap: 16 },
