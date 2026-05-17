@@ -31,7 +31,11 @@
       "directAccessGrantsEnabled": false,
       "protocol": "openid-connect",
       "redirectUris": [
+        "kerjapro://*",
         "kerjapro://auth/callback",
+        "exp://*",
+        "exp://192.168.100.49:19000/*",
+        "exp://localhost:19000/*",
         "exp://localhost:8081/--/auth/callback",
         "https://auth.expo.io/@yeketou/kerjapro-mobile"
       ],
