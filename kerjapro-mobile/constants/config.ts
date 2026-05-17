@@ -10,7 +10,7 @@ const LOCAL_IP = '192.168.100.49';
 const ENV = {
   dev: {
     API_BASE_URL:       `http://${LOCAL_IP}:8081`,
-    KEYCLOAK_URL:       `http://${LOCAL_IP}:8085`,  // Keycloak on 8085
+    KEYCLOAK_URL:       `http://${LOCAL_IP}:8080`,  // Keycloak on 8080
     KEYCLOAK_REALM:     'kerjapro',
     KEYCLOAK_CLIENT_ID: 'kerjapro-mobile',
   },
@@ -40,5 +40,5 @@ export const SERVICES = {
   project:      `http://${LOCAL_IP}:8082`,
   booking:      `http://${LOCAL_IP}:8083`,
   review:       `http://${LOCAL_IP}:8084`,
-  notification: `http://${LOCAL_IP}:8086`, // moved to 8086 (8085 = Keycloak)
+  notification: `http://${LOCAL_IP}:8085`,
 };
