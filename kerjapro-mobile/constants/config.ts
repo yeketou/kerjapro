@@ -1,26 +1,23 @@
-import Constants from 'expo-constants';
-
 // ─────────────────────────────────────────────────────────────
-// LOCAL DEV: Replace with your Windows machine's local IP.
-// Run `ipconfig` in PowerShell and look for:
-//   "IPv4 Address . . . . : 192.168.x.x"  (under your WiFi adapter)
-//
-// Your phone AND PC must be on the SAME WiFi network.
+// LOCAL DEV CONFIG
+// 1. Run `ipconfig` in PowerShell
+// 2. Find your WiFi "IPv4 Address" e.g. 192.168.1.105
+// 3. Replace LOCAL_IP below with that value
+// 4. Your phone and PC must be on the same WiFi
 // ─────────────────────────────────────────────────────────────
-const LOCAL_IP = '192.168.1.105'; // ← CHANGE THIS to your actual IP
+const LOCAL_IP = '192.168.1.105'; // ← CHANGE THIS
 
 const ENV = {
   dev: {
-    // Direct to service-contractor (no gateway needed for local dev)
-    API_BASE_URL:   `http://${LOCAL_IP}:8081`,
-    KEYCLOAK_URL:   `http://${LOCAL_IP}:8080`,
-    KEYCLOAK_REALM: 'kerjapro',
+    API_BASE_URL:       `http://${LOCAL_IP}:8081`,
+    KEYCLOAK_URL:       `http://${LOCAL_IP}:8085`,  // Keycloak on 8085
+    KEYCLOAK_REALM:     'kerjapro',
     KEYCLOAK_CLIENT_ID: 'kerjapro-mobile',
   },
   prod: {
-    API_BASE_URL:   'https://api.kerjapro.com',
-    KEYCLOAK_URL:   'https://auth.kerjapro.com',
-    KEYCLOAK_REALM: 'kerjapro',
+    API_BASE_URL:       'https://api.kerjapro.com',
+    KEYCLOAK_URL:       'https://auth.kerjapro.com',
+    KEYCLOAK_REALM:     'kerjapro',
     KEYCLOAK_CLIENT_ID: 'kerjapro-mobile',
   },
 };
@@ -38,11 +35,10 @@ export const KEYCLOAK = {
   scopes:             ['openid', 'profile', 'email'],
 };
 
-// Per-service URLs (when not using gateway)
 export const SERVICES = {
   contractor:   `http://${LOCAL_IP}:8081`,
   project:      `http://${LOCAL_IP}:8082`,
   booking:      `http://${LOCAL_IP}:8083`,
   review:       `http://${LOCAL_IP}:8084`,
-  notification: `http://${LOCAL_IP}:8085`,
+  notification: `http://${LOCAL_IP}:8086`, // moved to 8086 (8085 = Keycloak)
 };
