@@ -22,7 +22,6 @@ export interface KerjaProClaims {
   email: string;
   name: string;
   roles: string[];
-  tenant_slug?: string;
 }
 
 // ─────────────────────────────────────────────
@@ -139,11 +138,10 @@ export function parseJwtClaims(token: string): KerjaProClaims | null {
     const base64    = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const payload   = JSON.parse(atob(base64));
     return {
-      sub:         payload.sub,
-      email:       payload.email,
-      name:        payload.name,
-      roles:       payload.roles ?? [],
-      tenant_slug: payload.tenant_slug,
+      sub:   payload.sub,
+      email: payload.email,
+      name:  payload.name,
+      roles: payload.roles ?? [],
     };
   } catch {
     return null;

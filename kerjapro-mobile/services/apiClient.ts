@@ -22,11 +22,6 @@ apiClient.interceptors.request.use(
     if (tokens?.accessToken) {
       config.headers.Authorization = `Bearer ${tokens.accessToken}`;
 
-      // Inject tenant slug for MAIN_CONTRACTOR requests
-      const { tenantSlug } = useAuthStore.getState();
-      if (tenantSlug) {
-        config.headers['X-Tenant-Slug'] = tenantSlug;
-      }
     }
     return config;
   },

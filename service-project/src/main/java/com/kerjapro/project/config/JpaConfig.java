@@ -1,10 +1,5 @@
 package com.kerjapro.project.config;
 
-import com.kerjapro.common.tenant.TenantConnectionProvider;
-import com.kerjapro.common.tenant.TenantIdentifierResolver;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.cfg.AvailableSettings;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -16,19 +11,7 @@ import java.util.Optional;
 
 @Configuration
 @EnableJpaAuditing
-@RequiredArgsConstructor
 public class JpaConfig {
-
-    private final TenantConnectionProvider connectionProvider;
-    private final TenantIdentifierResolver  identifierResolver;
-
-    @Bean
-    public HibernatePropertiesCustomizer hibernateMultiTenancy() {
-        return props -> {
-            props.put(AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER, connectionProvider);
-            props.put(AvailableSettings.MULTI_TENANT_IDENTIFIER_RESOLVER,  identifierResolver);
-        };
-    }
 
     @Bean
     public AuditorAware<String> auditorProvider() {

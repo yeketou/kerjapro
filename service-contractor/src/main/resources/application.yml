@@ -6,7 +6,6 @@ spring:
     username: kerjapro
     password: kerjapro_pass
     hikari:
-      auto-commit: false
       maximum-pool-size: 10
   jpa:
     hibernate:

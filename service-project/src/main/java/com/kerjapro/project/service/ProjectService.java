@@ -2,7 +2,6 @@ package com.kerjapro.project.service;
 
 import com.kerjapro.common.exception.BusinessException;
 import com.kerjapro.common.exception.ResourceNotFoundException;
-import com.kerjapro.common.tenant.TenantContext;
 import com.kerjapro.project.dto.request.CreateProjectRequest;
 import com.kerjapro.project.dto.request.CreateWorkPackageRequest;
 import com.kerjapro.project.dto.response.ProjectDto;
@@ -39,18 +38,16 @@ public class ProjectService {
 
     @Transactional
     public ProjectDto createProject(String userId, CreateProjectRequest request) {
-        requireTenantContext();
         Project project = mapper.toEntity(request);
         project.setMainContractorId(userId);
         project.setStatus(ProjectStatus.DRAFT);
         Project saved = projectRepo.save(project);
-        log.info("Project created: id={}, tenant={}", saved.getId(), TenantContext.getTenantSlug());
+        log.info("Project created: id={}, owner={}", saved.getId(), userId);
         return mapper.toDto(saved);
     }
 
     @Transactional(readOnly = true)
     public Page<ProjectDto> getMyProjects(String userId, ProjectStatus status, Pageable pageable) {
-        requireTenantContext();
         Page<Project> page = (status != null)
                 ? projectRepo.findByMainContractorIdAndStatusAndDeletedAtIsNull(userId, status, pageable)
                 : projectRepo.findByMainContractorIdAndDeletedAtIsNull(userId, pageable);
@@ -158,16 +155,7 @@ public class ProjectService {
     // Helpers
     // ─────────────────────────────────────────────
 
-    private void requireTenantContext() {
-        if (!TenantContext.hasTenant()) {
-            throw new BusinessException(
-                "Tenant context is required for project operations",
-                HttpStatus.FORBIDDEN, "NO_TENANT_CONTEXT");
-        }
-    }
-
     private Project findOwned(String userId, UUID projectId) {
-        requireTenantContext();
         return projectRepo.findByIdAndMainContractorIdAndDeletedAtIsNull(projectId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project", projectId));
     }

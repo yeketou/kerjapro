@@ -26,7 +26,7 @@ export function useAuth() {
       ['MAIN_CONTRACTOR', 'SUBCONTRACTOR', 'PLATFORM_ADMIN'].includes(r)
     ) as Role | undefined;
 
-    store.setUser(claims.sub, role ?? null, claims.name, claims.tenant_slug);
+    store.setUser(claims.sub, role ?? null, claims.name);
 
     // Route based on role
     if (role === 'MAIN_CONTRACTOR') {
@@ -58,7 +58,7 @@ export function useAuth() {
     ) as Role | undefined;
 
     await store.setTokens(tokens.accessToken, tokens.refreshToken ?? '');
-    store.setUser(claims.sub, role ?? null, claims.name, claims.tenant_slug);
+    store.setUser(claims.sub, role ?? null, claims.name);
     return true;
   }, [store]);
 

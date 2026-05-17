@@ -10,18 +10,16 @@ interface AuthState {
   userId: string | null;
   role: Role;
   fullName: string | null;
-  // Tenant context — set for MAIN_CONTRACTOR, null for SUBCONTRACTOR
-  tenantSlug: string | null;
-  tenantName: string | null;
 
   setTokens: (access: string, refresh: string) => void;
-  setUser: (userId: string, role: Role, fullName: string, tenantSlug?: string, tenantName?: string) => void;
+  setUser: (userId: string, role: Role, fullName: string) => void;
   logout: () => Promise<void>;
   loadFromStorage: () => Promise<void>;
 }
 
-const TOKEN_KEY = 'kerjapro_access_token';
-const REFRESH_KEY = 'kerjapro_refresh_token';
+const TOKEN_KEY         = 'kerjapro_access_token';
+const REFRESH_TOKEN_KEY = 'kerjapro_refresh_token';
+const ID_TOKEN_KEY      = 'kerjapro_id_token';
 
 export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
@@ -30,22 +28,23 @@ export const useAuthStore = create<AuthState>((set) => ({
   userId: null,
   role: null,
   fullName: null,
-  tenantSlug: null,
-  tenantName: null,
 
   setTokens: async (access, refresh) => {
     await SecureStore.setItemAsync(TOKEN_KEY, access);
-    await SecureStore.setItemAsync(REFRESH_KEY, refresh);
+    await SecureStore.setItemAsync(REFRESH_TOKEN_KEY, refresh);
     set({ accessToken: access, refreshToken: refresh, isAuthenticated: true });
   },
 
-  setUser: (userId, role, fullName, tenantSlug, tenantName) => {
-    set({ userId, role, fullName, tenantSlug: tenantSlug ?? null, tenantName: tenantName ?? null });
+  setUser: (userId, role, fullName) => {
+    set({ userId, role, fullName });
   },
 
   logout: async () => {
-    await SecureStore.deleteItemAsync(TOKEN_KEY);
-    await SecureStore.deleteItemAsync(REFRESH_KEY);
+    await Promise.all([
+      SecureStore.deleteItemAsync(TOKEN_KEY),
+      SecureStore.deleteItemAsync(REFRESH_TOKEN_KEY),
+      SecureStore.deleteItemAsync(ID_TOKEN_KEY),
+    ]);
     set({
       isAuthenticated: false,
       accessToken: null,
@@ -53,14 +52,12 @@ export const useAuthStore = create<AuthState>((set) => ({
       userId: null,
       role: null,
       fullName: null,
-      tenantSlug: null,
-      tenantName: null,
     });
   },
 
   loadFromStorage: async () => {
     const access = await SecureStore.getItemAsync(TOKEN_KEY);
-    const refresh = await SecureStore.getItemAsync(REFRESH_KEY);
+    const refresh = await SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
     if (access && refresh) {
       set({ accessToken: access, refreshToken: refresh, isAuthenticated: true });
     }
