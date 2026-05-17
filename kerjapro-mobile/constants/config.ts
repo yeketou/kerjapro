@@ -5,7 +5,7 @@
 // 3. Replace LOCAL_IP below with that value
 // 4. Your phone and PC must be on the same WiFi
 // ─────────────────────────────────────────────────────────────
-const LOCAL_IP = '192.168.1.105'; // ← CHANGE THIS
+const LOCAL_IP = '192.168.100.49';
 
 const ENV = {
   dev: {
